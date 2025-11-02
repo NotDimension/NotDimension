@@ -80,7 +80,6 @@
             </a>
         </div>
 
-        <!-- Added: SMP Finder moved to Current Roles as Helper -->
         <div class="bg-gray-800/50 p-4 rounded-lg hover:bg-gray-700/50 transition">
             <img id="smpfinder-icon" class="w-16 h-16 rounded-full mb-2 mx-auto" alt="SMP Finder">
             <h3 class="text-xl font-semibold mb-2 text-center">SMP Finder</h3>
@@ -257,33 +256,61 @@ VANTA.GLOBE({
     scaleMobile: 1.00
 });
 
-// View counter with 12-hour cooldown
-const cooldown = 12 * 60 * 60 * 1000; // 12 hours
-function updateViewCount() {
+/*
+  CounterAPI integration (GET increment).
+  - Uses /up/{slug} endpoint which works from static hosting (no POST required).
+  - Replace COUNTER_SLUG with your counter slug if different.
+  - Cooldown enforced per browser via localStorage (12 hours).
+*/
+const COUNTER_SLUG = 'first-counter-1511'; // <-- replace with your slug if needed
+const COOLDOWN_MS = 12 * 60 * 60 * 1000;
+
+async function fetchUp(slug){
+    // Increment and return JSON
+    const url = `https://api.counterapi.dev/up/${encodeURIComponent(slug)}`;
+    const res = await fetch(url);
+    return res.json();
+}
+
+async function fetchGet(slug){
+    const url = `https://api.counterapi.dev/get/${encodeURIComponent(slug)}`;
+    const res = await fetch(url);
+    return res.json();
+}
+
+async function updateViewCounter(){
     const now = Date.now();
-    const lastVisit = localStorage.getItem('lastVisit') || 0;
-    const key = 'unique_views_12h';
-    const namespace = 'notdimension_site';
-    
-    if(now - lastVisit > cooldown){
-        fetch(`https://api.countapi.xyz/hit/${namespace}/${key}`)
-        .then(res => res.json())
-        .then(data => {
-            document.getElementById('view-count').textContent = data.value;
-            localStorage.setItem('lastVisit', now);
-        })
-        .catch(console.error);
-    } else {
-        fetch(`https://api.countapi.xyz/get/${namespace}/${key}`)
-        .then(res => res.json())
-        .then(data => {
-            document.getElementById('view-count').textContent = data.value;
-        })
-        .catch(console.error);
+    const last = parseInt(localStorage.getItem('counter_last') || '0', 10);
+    const slug = COUNTER_SLUG;
+
+    try{
+        if(!last || (now - last) > COOLDOWN_MS){
+            // attempt to increment
+            const data = await fetchUp(slug);
+            if(data && (data.value !== undefined)){
+                document.getElementById('view-count').textContent = data.value;
+                localStorage.setItem('counter_last', now.toString());
+                return;
+            }
+            // fallback to get if up did not return value
+        }
+        // not incrementing or fallback: get current value
+        const data2 = await fetchGet(slug);
+        if(data2 && (data2.value !== undefined)){
+            document.getElementById('view-count').textContent = data2.value;
+        } else {
+            document.getElementById('view-count').textContent = '—';
+            console.warn('CounterAPI returned no value', data2);
+        }
+    }catch(err){
+        console.error('CounterAPI error', err);
+        // show fallback text
+        document.getElementById('view-count').textContent = '—';
     }
 }
 
-updateViewCount();
+// Run counter update on load
+updateViewCounter();
 </script>
 </body>
 </html>
