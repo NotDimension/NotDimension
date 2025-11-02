@@ -61,6 +61,7 @@
                 <i data-feather="link" class="mr-1 w-4 h-4"></i> Discord
             </a>
         </div>
+
         <div class="bg-gray-800/50 p-4 rounded-lg hover:bg-gray-700/50 transition">
             <img id="lunex-icon" class="w-16 h-16 rounded-full mb-2 mx-auto" alt="Lunex">
             <h3 class="text-xl font-semibold mb-2 text-center">Lunex</h3>
@@ -69,11 +70,22 @@
                 <i data-feather="link" class="mr-1 w-4 h-4"></i> Discord
             </a>
         </div>
+
         <div class="bg-gray-800/50 p-4 rounded-lg hover:bg-gray-700/50 transition">
             <img id="ocean-icon" class="w-16 h-16 rounded-full mb-2 mx-auto" alt="OceanSMP">
             <h3 class="text-xl font-semibold mb-2 text-center">OceanMC</h3>
             <p class="text-green-300 mb-2 text-center">Owner (300 members)</p>
             <a href="https://discord.gg/YEgAUe8UMp" class="text-blue-400 hover:underline flex items-center justify-center" target="_blank">
+                <i data-feather="link" class="mr-1 w-4 h-4"></i> Discord
+            </a>
+        </div>
+
+        <!-- Added: SMP Finder moved to Current Roles as Helper -->
+        <div class="bg-gray-800/50 p-4 rounded-lg hover:bg-gray-700/50 transition">
+            <img id="smpfinder-icon" class="w-16 h-16 rounded-full mb-2 mx-auto" alt="SMP Finder">
+            <h3 class="text-xl font-semibold mb-2 text-center">SMP Finder</h3>
+            <p class="text-green-300 mb-2 text-center">Helper (23k members)</p>
+            <a href="https://discord.gg/cuP8bPZgYv" class="text-blue-400 hover:underline flex items-center justify-center" target="_blank">
                 <i data-feather="link" class="mr-1 w-4 h-4"></i> Discord
             </a>
         </div>
@@ -88,18 +100,11 @@
             <img id="steaky-icon" class="w-16 h-16 rounded-full mb-2 mx-auto" alt="SteakySMP">
             <h3 class="text-xl font-semibold mb-2 text-center">SteakySMP</h3>
             <p class="text-green-300 mb-2 text-center">Co-Owner (1.2k members)</p>
-            <a href="https://discord.gg/TKmvntww" class="text-blue-400 hover:underline flex items-center justify-center" target="_blank">
+            <a href="https://discord.gg/nGVcVzK6" class="text-blue-400 hover:underline flex items-center justify-center" target="_blank">
                 <i data-feather="link" class="mr-1 w-4 h-4"></i> Discord
             </a>
         </div>
-        <div class="bg-gray-800/50 p-4 rounded-lg hover:bg-gray-700/50 transition">
-            <img id="smpfinder-icon" class="w-16 h-16 rounded-full mb-2 mx-auto" alt="SMP Finder">
-            <h3 class="text-xl font-semibold mb-2 text-center">SMP Finder</h3>
-            <p class="text-green-300 mb-2 text-center">Senior Mod (23k members)</p>
-            <a href="https://discord.gg/cuP8bPZgYv" class="text-blue-400 hover:underline flex items-center justify-center" target="_blank">
-                <i data-feather="link" class="mr-1 w-4 h-4"></i> Discord
-            </a>
-        </div>
+
         <div class="bg-gray-800/50 p-4 rounded-lg hover:bg-gray-700/50 transition">
             <img id="verged-icon" class="w-16 h-16 rounded-full mb-2 mx-auto" alt="Verged">
             <h3 class="text-xl font-semibold mb-2 text-center">Verged</h3>
@@ -108,6 +113,7 @@
                 <i data-feather="link" class="mr-1 w-4 h-4"></i> Discord
             </a>
         </div>
+
         <div class="bg-gray-800/50 p-4 rounded-lg hover:bg-gray-700/50 transition">
             <img id="shatter-icon" class="w-16 h-16 rounded-full mb-2 mx-auto" alt="ShatterMC">
             <h3 class="text-xl font-semibold mb-2 text-center">ShatterMC</h3>
@@ -116,11 +122,12 @@
                 <i data-feather="link" class="mr-1 w-4 h-4"></i> Discord
             </a>
         </div>
+
         <div class="bg-gray-800/50 p-4 rounded-lg hover:bg-gray-700/50 transition">
             <img id="nebular-icon" class="w-16 h-16 rounded-full mb-2 mx-auto" alt="Nebular SMP">
             <h3 class="text-xl font-semibold mb-2 text-center">Nebular SMP</h3>
             <p class="text-green-300 mb-2 text-center">Overseer/Co-Owner (200 members)</p>
-            <a href="https://discord.gg/5Q3zRAjz" class="text-blue-400 hover:underline flex items-center justify-center" target="_blank">
+            <a href="https://discord.gg/YYwWMXxKAz" class="text-blue-400 hover:underline flex items-center justify-center" target="_blank">
                 <i data-feather="link" class="mr-1 w-4 h-4"></i> Discord
             </a>
         </div>
@@ -214,9 +221,10 @@ async function fetchDiscordIcon(inviteCode, elementId){
         const response = await fetch(`https://discord.com/api/v9/invites/${inviteCode}?with_counts=true&with_expiration=true`);
         if(!response.ok) throw new Error('Failed to fetch server info');
         const data = await response.json();
-        if(data.guild.icon){
+        if(data.guild && data.guild.icon){
             const iconUrl = `https://cdn.discordapp.com/icons/${data.guild.id}/${data.guild.icon}.png?size=256`;
-            document.getElementById(elementId).src = iconUrl;
+            const el = document.getElementById(elementId);
+            if(el) el.src = iconUrl;
         }
     }catch(e){console.error(e);}
 }
@@ -225,13 +233,13 @@ async function fetchDiscordIcon(inviteCode, elementId){
 fetchDiscordIcon('cVBDxNxP5c','prism-icon');
 fetchDiscordIcon('py7ZGUJKmt','lunex-icon');
 fetchDiscordIcon('YEgAUe8UMp','ocean-icon');
+fetchDiscordIcon('cuP8bPZgYv','smpfinder-icon'); // moved to Current Roles
 
 // Previous roles
-fetchDiscordIcon('TKmvntww','steaky-icon');
-fetchDiscordIcon('cuP8bPZgYv','smpfinder-icon');
+fetchDiscordIcon('nGVcVzK6','steaky-icon'); // updated Steaky link
 fetchDiscordIcon('cnDtF5w7VN','verged-icon');
 fetchDiscordIcon('sfSnvmtFfA','shatter-icon');
-fetchDiscordIcon('5Q3zRAjz','nebular-icon');
+fetchDiscordIcon('YYwWMXxKAz','nebular-icon'); // updated Nebular link
 
 // VANTA background (optional)
 VANTA.GLOBE({
