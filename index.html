@@ -83,7 +83,7 @@
         <div class="bg-gray-800/50 p-4 rounded-lg hover:bg-gray-700/50 transition">
             <img id="smpfinder-icon" class="w-16 h-16 rounded-full mb-2 mx-auto" alt="SMP Finder">
             <h3 class="text-xl font-semibold mb-2 text-center">SMP Finder</h3>
-            <p class="text-green-300 mb-2 text-center">Helper (23k members)</p>
+            <p class="text-green-300 mb-2 text-center">Reinstated</p>
             <a href="https://discord.gg/cuP8bPZgYv" class="text-blue-400 hover:underline flex items-center justify-center" target="_blank">
                 <i data-feather="link" class="mr-1 w-4 h-4"></i> Discord
             </a>
@@ -204,15 +204,15 @@
     </div>
 </section>
 
+<!-- Website Views -->
+<section class="fixed bottom-4 left-4 bg-gray-800/50 p-3 rounded-lg shadow-lg flex items-center gap-2">
+    <span>🌐 Views: </span>
+    <span id="view-count">0</span>
+</section>
+
 </main>
 
-<!-- Footer -->
 <custom-footer></custom-footer>
-
-<!-- View Counter (bottom-left) -->
-<div id="view-counter" class="fixed bottom-4 left-4 bg-gray-800/50 p-2 rounded-lg text-green-400 shadow-lg">
-    Views: <span id="views">0</span>
-</div>
 
 <script src="components/navbar.js"></script>
 <script src="components/footer.js"></script>
@@ -257,27 +257,35 @@ VANTA.GLOBE({
     scaleMobile: 1.00
 });
 
-// View Counter with 12-hour unique cooldown per browser
-const VIEW_COOLDOWN = 12 * 60 * 60 * 1000; // 12 hours
-const lastView = localStorage.getItem('lastViewTime');
-const now = Date.now();
+// Website Views via CountAPI with 12-hour cooldown
+const namespace = "notdimension_site";
+const key = "unique_views_12h";
+const cooldown = 12 * 60 * 60 * 1000; // 12 hours
 
-async function updateViews() {
-    const url = 'https://api.countapi.xyz/hit/notdimension/uniqueviews';
-    const response = await fetch(url);
-    const data = await response.json();
-    document.getElementById('views').textContent = data.value;
-}
-
-// Only increment if cooldown passed
-if(!lastView || now - lastView > VIEW_COOLDOWN){
-    updateViews();
-    localStorage.setItem('lastViewTime', now);
-} else {
-    fetch('https://api.countapi.xyz/get/notdimension/uniqueviews')
+function updateViewCount() {
+    const now = Date.now();
+    const lastVisit = localStorage.getItem('lastVisit') || 0;
+    if(now - lastVisit > cooldown){
+        fetch(`https://api.countapi.xyz/hit/${namespace}/${key}`)
         .then(res => res.json())
-        .then(data => document.getElementById('views').textContent = data.value);
+        .then(data => {
+            document.getElementById('view-count').textContent = data.value;
+            localStorage.setItem('lastVisit', now);
+        })
+        .catch(console.error);
+    } else {
+        // Show current value without increment
+        fetch(`https://api.countapi.xyz/get/${namespace}/${key}`)
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById('view-count').textContent = data.value;
+        })
+        .catch(console.error);
+    }
 }
+
+updateViewCount();
 </script>
 </body>
 </html>
+
