@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,15 +8,17 @@
 <link rel="stylesheet" href="style.css">
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.globe.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body class="bg-gray-900 text-gray-100 min-h-screen">
 
 <!-- Background video -->
 <div class="fixed inset-0 z-0 overflow-hidden">
-  <video autoplay muted loop playsinline class="w-full h-full object-cover">
-    <source src="./background.mp4" type="video/mp4">
+  <video autoplay muted loop class="w-full h-full object-cover">
+    <source src="background.mp4" type="video/mp4">
   </video>
-  <div class="absolute inset-0 bg-gray-900/70"></div>
+  <div class="absolute inset-0" style="background-color: rgba(26,24,22,0.7);"></div>
 </div>
 
 <custom-navbar></custom-navbar>
@@ -58,6 +61,7 @@
           <i data-feather="link" class="mr-1 w-4 h-4 text-[#9c8b7d]"></i> Discord
         </a>
       </div>
+
       <div class="bg-[#1f1d1b]/50 p-4 rounded-lg hover:bg-[#2a2724]/50 transition">
         <img id="lunex-icon" class="w-16 h-16 rounded-full mb-2 mx-auto" alt="Lunex">
         <h3 class="text-xl font-semibold mb-2 text-center text-[#f5f2ef]">Lunex</h3>
@@ -66,11 +70,21 @@
           <i data-feather="link" class="mr-1 w-4 h-4 text-[#9c8b7d]"></i> Discord
         </a>
       </div>
+
       <div class="bg-[#1f1d1b]/50 p-4 rounded-lg hover:bg-[#2a2724]/50 transition">
         <img id="ocean-icon" class="w-16 h-16 rounded-full mb-2 mx-auto" alt="OceanSMP">
         <h3 class="text-xl font-semibold mb-2 text-center text-[#f5f2ef]">OceanMC</h3>
         <p class="mb-2 text-center text-[#9c8b7d]">Owner (300 members)</p>
         <a href="https://discord.gg/YEgAUe8UMp" class="flex items-center justify-center text-[#b8a99c]" target="_blank">
+          <i data-feather="link" class="mr-1 w-4 h-4 text-[#9c8b7d]"></i> Discord
+        </a>
+      </div>
+
+      <div class="bg-[#1f1d1b]/50 p-4 rounded-lg hover:bg-[#2a2724]/50 transition">
+        <img id="smpfinder-icon" class="w-16 h-16 rounded-full mb-2 mx-auto" alt="SMP Finder">
+        <h3 class="text-xl font-semibold mb-2 text-center text-[#f5f2ef]">SMP Finder</h3>
+        <p class="mb-2 text-center text-[#9c8b7d]">Helper (23k members)</p>
+        <a href="https://discord.gg/cuP8bPZgYv" class="flex items-center justify-center text-[#b8a99c]" target="_blank">
           <i data-feather="link" class="mr-1 w-4 h-4 text-[#9c8b7d]"></i> Discord
         </a>
       </div>
@@ -102,6 +116,14 @@
         <h3 class="text-xl font-semibold mb-2 text-center text-[#f5f2ef]">ShatterMC</h3>
         <p class="mb-2 text-center text-[#9c8b7d]">Admin (260 members)</p>
         <a href="https://discord.gg/sfSnvmtFfA" class="flex items-center justify-center text-[#b8a99c]" target="_blank">
+          <i data-feather="link" class="mr-1 w-4 h-4 text-[#9c8b7d]"></i> Discord
+        </a>
+      </div>
+      <div class="bg-[#1f1d1b]/50 p-4 rounded-lg hover:bg-[#2a2724]/50 transition">
+        <img id="nebular-icon" class="w-16 h-16 rounded-full mb-2 mx-auto" alt="Nebular SMP">
+        <h3 class="text-xl font-semibold mb-2 text-center text-[#f5f2ef]">Nebular SMP</h3>
+        <p class="mb-2 text-center text-[#9c8b7d]">Overseer/Co-Owner (200 members)</p>
+        <a href="https://discord.gg/YYwWMXxKAz" class="flex items-center justify-center text-[#b8a99c]" target="_blank">
           <i data-feather="link" class="mr-1 w-4 h-4 text-[#9c8b7d]"></i> Discord
         </a>
       </div>
@@ -147,6 +169,9 @@
       <a href="https://www.youtube.com/@NotDimension" target="_blank" class="bg-[#1f1d1b]/50 hover:bg-[#2a2724]/50 p-4 rounded-lg flex items-center transition">
         <i data-feather="youtube" class="text-[#9c8b7d] mr-3"></i> YouTube
       </a>
+      <a href="https://open.spotify.com/user/31z2sjm4nmep3ecjeibav25czjsa" target="_blank" class="bg-[#1f1d1b]/50 hover:bg-[#2a2724]/50 p-4 rounded-lg flex items-center transition">
+        <i data-feather="music" class="text-[#9c8b7d] mr-3"></i> Spotify
+      </a>
       <a href="https://steamcommunity.com/id/notdimension" target="_blank" class="bg-[#1f1d1b]/50 hover:bg-[#2a2724]/50 p-4 rounded-lg flex items-center transition">
         <i data-feather="cpu" class="text-[#9c8b7d] mr-3"></i> Steam
       </a>
@@ -189,6 +214,19 @@
   fetchDiscordIcon('nGVcVzK6','steaky-icon');
   fetchDiscordIcon('cnDtF5w7VN','verged-icon');
   fetchDiscordIcon('sfSnvmtFfA','shatter-icon');
+  fetchDiscordIcon('YYwWMXxKAz','nebular-icon');
+
+  if(document.getElementById('vanta-bg')){
+    VANTA.GLOBE({
+      el: "#vanta-bg",
+      mouseControls: true,
+      touchControls: true,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00
+    });
+  }
 </script>
 </body>
 </html>
