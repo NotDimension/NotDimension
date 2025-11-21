@@ -21,8 +21,6 @@
   <div class="absolute inset-0 bg-black/40"></div>
 </div>
 
-<custom-navbar></custom-navbar>
-
 <main class="relative z-10 max-w-6xl mx-auto px-4 py-12 space-y-12">
 
   <!-- Hero -->
@@ -287,11 +285,11 @@
 
 </main>
 
-<custom-footer></custom-footer>
-
-<script src="components/navbar.js"></script>
-<script src="components/footer.js"></script>
-<script src="script.js"></script>
+<footer class="bg-[#1c1917]/80 backdrop-blur-sm mt-12 py-6">
+  <div class="max-w-6xl mx-auto px-4 text-center text-[#d6bfa7]">
+    <p>&copy; 2024 NotDimension. All rights reserved.</p>
+  </div>
+</footer>
 <script>
   feather.replace();
 
@@ -403,8 +401,17 @@
     };
 
     try {
-      await window.storage.set(`vouch:pending:${vouch.id}`, JSON.stringify(vouch), true);
-      status.innerHTML = '<span class="text-green-400">Vouch submitted! Awaiting approval.</span>';
+      // Check if storage is available
+      if (!window.storage) {
+        status.innerHTML = '<span class="text-yellow-400">Storage not available. Your vouch data: ' + JSON.stringify(vouch) + '</span>';
+        console.log('Vouch would be:', vouch);
+        return;
+      }
+
+      const result = await window.storage.set(`vouch:pending:${vouch.id}`, JSON.stringify(vouch), true);
+      console.log('Storage result:', result);
+      
+      status.innerHTML = '<span class="text-green-400">✓ Vouch submitted successfully! Awaiting approval.</span>';
       
       setTimeout(() => {
         vouchModal.classList.add('hidden');
@@ -416,7 +423,8 @@
         status.innerHTML = '';
       }, 2000);
     } catch (e) {
-      status.innerHTML = '<span class="text-red-400">Error submitting vouch. Please try again.</span>';
+      console.error('Submit error:', e);
+      status.innerHTML = '<span class="text-red-400">Error: ' + e.message + '</span>';
     }
   });
 
