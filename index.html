@@ -153,6 +153,43 @@
     </div>
   </section>
 
+<!-- Vouches -->
+<section class="frosted-glass rounded-lg p-6 shadow-xl animate-fadeIn">
+  <h2 class="text-3xl font-bold mb-6 text-[#e0c8af]">Vouches</h2>
+
+  <!-- Carousel -->
+  <div id="vouch-carousel" class="relative bg-[#1c1917]/70 p-6 rounded-lg h-56 overflow-hidden">
+    <!-- Slides get injected by JS -->
+  </div>
+
+  <div class="flex justify-center mt-6">
+    <button id="openVouchBtn" class="px-5 py-2 bg-[#e0c8af] text-black rounded-lg font-semibold hover:bg-[#d6bfa7] transition">
+      Submit Your Vouch
+    </button>
+  </div>
+</section>
+
+<!-- Modal -->
+<div id="vouchModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center">
+  <div class="bg-[#1c1917] p-6 rounded-xl w-80 shadow-xl text-[#f5efe9]">
+    <h3 class="text-xl font-bold mb-4">Submit a Vouch</h3>
+
+    <label class="block mb-2">Username</label>
+    <input id="vouchUser" class="w-full p-2 rounded bg-[#262320] mb-3 outline-none" placeholder="Your username">
+
+    <label class="block mb-2">Avatar file name</label>
+    <input id="vouchAvatar" class="w-full p-2 rounded bg-[#262320] mb-3 outline-none" placeholder="e.g. jesse.png">
+
+    <label class="block mb-2">Your Vouch</label>
+    <textarea id="vouchText" class="w-full p-2 rounded bg-[#262320] h-24 outline-none" placeholder="Type your vouch..."></textarea>
+
+    <div class="flex justify-end gap-2 mt-4">
+      <button id="closeModal" class="px-3 py-1 bg-[#3a332d] rounded hover:bg-[#4a413a] transition">Cancel</button>
+      <button id="submitVouch" class="px-3 py-1 bg-[#e0c8af] text-black rounded hover:bg-[#d6bfa7] transition">Submit</button>
+    </div>
+  </div>
+</div>
+
   <!-- Currently Working On -->
   <section class="frosted-glass rounded-lg p-6 shadow-xl animate-fadeIn">
     <h2 class="text-3xl font-bold mb-6 text-[#e0c8af]">Currently Working On</h2>
