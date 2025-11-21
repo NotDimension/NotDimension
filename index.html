@@ -158,34 +158,74 @@
   <h2 class="text-3xl font-bold mb-6 text-[#e0c8af]">Vouches</h2>
 
   <!-- Carousel -->
-  <div id="vouch-carousel" class="relative bg-[#1c1917]/70 p-6 rounded-lg h-56 overflow-hidden">
-    <!-- Slides get injected by JS -->
+  <div id="vouch-carousel" class="relative bg-[#1c1917]/70 p-6 rounded-lg min-h-[14rem] overflow-hidden">
+    <div id="vouch-slides" class="transition-opacity duration-500"></div>
+    
+    <!-- Navigation -->
+    <button id="prevVouch" class="absolute left-2 top-1/2 -translate-y-1/2 bg-[#e0c8af] text-black w-8 h-8 rounded-full hover:bg-[#d6bfa7] transition">‹</button>
+    <button id="nextVouch" class="absolute right-2 top-1/2 -translate-y-1/2 bg-[#e0c8af] text-black w-8 h-8 rounded-full hover:bg-[#d6bfa7] transition">›</button>
   </div>
 
-  <div class="flex justify-center mt-6">
+  <div class="flex justify-center mt-6 gap-3">
     <button id="openVouchBtn" class="px-5 py-2 bg-[#e0c8af] text-black rounded-lg font-semibold hover:bg-[#d6bfa7] transition">
       Submit Your Vouch
+    </button>
+    <button id="openAdminBtn" class="px-5 py-2 bg-[#3a332d] text-[#f5efe9] rounded-lg font-semibold hover:bg-[#4a413a] transition">
+      Admin Panel
     </button>
   </div>
 </section>
 
-<!-- Modal -->
-<div id="vouchModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center">
-  <div class="bg-[#1c1917] p-6 rounded-xl w-80 shadow-xl text-[#f5efe9]">
+<!-- Submit Vouch Modal -->
+<div id="vouchModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+  <div class="bg-[#1c1917] p-6 rounded-xl w-96 shadow-xl text-[#f5efe9] max-h-[90vh] overflow-y-auto">
     <h3 class="text-xl font-bold mb-4">Submit a Vouch</h3>
 
     <label class="block mb-2">Username</label>
     <input id="vouchUser" class="w-full p-2 rounded bg-[#262320] mb-3 outline-none" placeholder="Your username">
 
-    <label class="block mb-2">Avatar file name</label>
-    <input id="vouchAvatar" class="w-full p-2 rounded bg-[#262320] mb-3 outline-none" placeholder="e.g. jesse.png">
+    <label class="block mb-2">Discord User ID</label>
+    <input id="vouchDiscordId" class="w-full p-2 rounded bg-[#262320] mb-1 outline-none" placeholder="123456789012345678">
+    <p class="text-xs text-[#d6bfa7] mb-3">Enable Developer Mode in Discord, right-click your profile, Copy ID</p>
+
+    <label class="block mb-2">Discord Avatar URL (Optional)</label>
+    <input id="vouchAvatarUrl" class="w-full p-2 rounded bg-[#262320] mb-1 outline-none" placeholder="https://cdn.discordapp.com/avatars/...">
+    <p class="text-xs text-[#d6bfa7] mb-3">Right-click your Discord avatar → Copy Image Address</p>
 
     <label class="block mb-2">Your Vouch</label>
     <textarea id="vouchText" class="w-full p-2 rounded bg-[#262320] h-24 outline-none" placeholder="Type your vouch..."></textarea>
 
+    <div id="submitStatus" class="mt-3 text-sm"></div>
+
     <div class="flex justify-end gap-2 mt-4">
       <button id="closeModal" class="px-3 py-1 bg-[#3a332d] rounded hover:bg-[#4a413a] transition">Cancel</button>
       <button id="submitVouch" class="px-3 py-1 bg-[#e0c8af] text-black rounded hover:bg-[#d6bfa7] transition">Submit</button>
+    </div>
+  </div>
+</div>
+
+<!-- Admin Panel Modal -->
+<div id="adminModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+  <div class="bg-[#1c1917] p-6 rounded-xl w-[90vw] max-w-4xl shadow-xl text-[#f5efe9] max-h-[90vh] overflow-y-auto">
+    <div class="flex justify-between items-center mb-4">
+      <h3 class="text-xl font-bold">Admin Panel - Moderate Vouches</h3>
+      <button id="closeAdmin" class="text-2xl hover:text-[#d6bfa7]">×</button>
+    </div>
+
+    <div class="mb-4 p-3 bg-[#262320] rounded">
+      <label class="block mb-2">Admin Password</label>
+      <input type="password" id="adminPassword" class="w-full p-2 rounded bg-[#1c1917] outline-none" placeholder="Enter admin password">
+      <button id="unlockAdmin" class="mt-2 px-4 py-2 bg-[#e0c8af] text-black rounded hover:bg-[#d6bfa7] transition">Unlock</button>
+    </div>
+
+    <div id="adminContent" class="hidden">
+      <div class="mb-4 flex gap-2">
+        <button id="showPending" class="px-4 py-2 bg-[#e0c8af] text-black rounded hover:bg-[#d6bfa7] transition">Pending</button>
+        <button id="showApproved" class="px-4 py-2 bg-[#3a332d] rounded hover:bg-[#4a413a] transition">Approved</button>
+      </div>
+
+      <div id="pendingVouches" class="space-y-4"></div>
+      <div id="approvedVouches" class="space-y-4 hidden"></div>
     </div>
   </div>
 </div>
@@ -195,7 +235,6 @@
     <h2 class="text-3xl font-bold mb-6 text-[#e0c8af]">Currently Working On</h2>
     <div class="flex flex-col md:flex-row gap-6">
       
-      <!-- Card 1 -->
       <div class="flex-1 bg-[#1c1917]/70 rounded-xl p-5 shadow-lg hover:bg-[#262320]/70 transition flex flex-col justify-between">
         <div>
           <h3 class="text-xl font-semibold mb-2 text-[#f5efe9]">MOOC Java Programming I & II</h3>
@@ -207,7 +246,6 @@
         </a>
       </div>
       
-      <!-- Card 2 -->
       <div class="flex-1 bg-[#1c1917]/70 rounded-xl p-5 shadow-lg hover:bg-[#262320]/70 transition flex flex-col justify-between">
         <div>
           <h3 class="text-xl font-semibold mb-2 text-[#f5efe9]">Object-Oriented Java Course</h3>
@@ -257,17 +295,316 @@
 <script>
   feather.replace();
 
-  if(document.getElementById('vanta-bg')){
-    VANTA.GLOBE({
-      el: "#vanta-bg",
-      mouseControls: true,
-      touchControls: true,
-      minHeight: 200.00,
-      minWidth: 200.00,
-      scale: 1.00,
-      scaleMobile: 1.00
-    });
+  // Vouch System with Moderation
+  const ADMIN_PASSWORD = 'notdim2024'; // Change this!
+  let currentSlide = 0;
+  let approvedVouches = [];
+
+  // Load approved vouches
+  async function loadApprovedVouches() {
+    try {
+      const result = await window.storage.list('vouch:approved:', true);
+      if (result && result.keys) {
+        approvedVouches = [];
+        for (const key of result.keys) {
+          try {
+            const data = await window.storage.get(key, true);
+            if (data) {
+              approvedVouches.push(JSON.parse(data.value));
+            }
+          } catch (e) {
+            console.log('Vouch not found:', key);
+          }
+        }
+        displayCarousel();
+      }
+    } catch (e) {
+      console.log('No vouches yet');
+      displayCarousel();
+    }
   }
-</script>
-</body>
-</html>
+
+  // Display carousel
+  function displayCarousel() {
+    const container = document.getElementById('vouch-slides');
+    
+    if (approvedVouches.length === 0) {
+      container.innerHTML = '<p class="text-center text-[#d6bfa7]">No vouches yet. Be the first to submit one!</p>';
+      return;
+    }
+
+    const vouch = approvedVouches[currentSlide];
+    const avatarUrl = vouch.avatarUrl || `https://cdn.discordapp.com/embed/avatars/${parseInt(vouch.discordId || '0') % 5}.png`;
+    
+    container.innerHTML = `
+      <div class="flex items-start gap-4">
+        <img src="${avatarUrl}" alt="${vouch.username}" 
+             class="w-16 h-16 rounded-full border-2 border-[#d6bfa7]"
+             onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'">
+        <div class="flex-1">
+          <h4 class="font-semibold text-[#f5efe9]">${vouch.username}</h4>
+          <p class="text-[#d6bfa7] text-sm mt-2">"${vouch.text}"</p>
+          <p class="text-xs text-[#a89684] mt-2">${new Date(vouch.timestamp).toLocaleDateString()}</p>
+        </div>
+      </div>
+      <div class="text-center mt-4 text-sm text-[#d6bfa7]">${currentSlide + 1} / ${approvedVouches.length}</div>
+    `;
+  }
+
+  // Carousel navigation
+  document.getElementById('prevVouch').addEventListener('click', () => {
+    if (approvedVouches.length > 0) {
+      currentSlide = (currentSlide - 1 + approvedVouches.length) % approvedVouches.length;
+      displayCarousel();
+    }
+  });
+
+  document.getElementById('nextVouch').addEventListener('click', () => {
+    if (approvedVouches.length > 0) {
+      currentSlide = (currentSlide + 1) % approvedVouches.length;
+      displayCarousel();
+    }
+  });
+
+  // Submit vouch modal
+  const vouchModal = document.getElementById('vouchModal');
+  const adminModal = document.getElementById('adminModal');
+
+  document.getElementById('openVouchBtn').addEventListener('click', () => {
+    vouchModal.classList.remove('hidden');
+    vouchModal.classList.add('flex');
+  });
+
+  document.getElementById('closeModal').addEventListener('click', () => {
+    vouchModal.classList.add('hidden');
+    vouchModal.classList.remove('flex');
+  });
+
+  document.getElementById('submitVouch').addEventListener('click', async () => {
+    const username = document.getElementById('vouchUser').value.trim();
+    const discordId = document.getElementById('vouchDiscordId').value.trim();
+    const avatarUrl = document.getElementById('vouchAvatarUrl').value.trim();
+    const text = document.getElementById('vouchText').value.trim();
+    const status = document.getElementById('submitStatus');
+
+    if (!username || !text) {
+      status.innerHTML = '<span class="text-red-400">Please fill in username and vouch text!</span>';
+      return;
+    }
+
+    const vouch = {
+      id: Date.now(),
+      username,
+      discordId,
+      avatarUrl,
+      text,
+      timestamp: Date.now(),
+      status: 'pending'
+    };
+
+    try {
+      await window.storage.set(`vouch:pending:${vouch.id}`, JSON.stringify(vouch), true);
+      status.innerHTML = '<span class="text-green-400">Vouch submitted! Awaiting approval.</span>';
+      
+      setTimeout(() => {
+        vouchModal.classList.add('hidden');
+        vouchModal.classList.remove('flex');
+        document.getElementById('vouchUser').value = '';
+        document.getElementById('vouchDiscordId').value = '';
+        document.getElementById('vouchAvatarUrl').value = '';
+        document.getElementById('vouchText').value = '';
+        status.innerHTML = '';
+      }, 2000);
+    } catch (e) {
+      status.innerHTML = '<span class="text-red-400">Error submitting vouch. Please try again.</span>';
+    }
+  });
+
+  // Admin Panel
+  document.getElementById('openAdminBtn').addEventListener('click', () => {
+    adminModal.classList.remove('hidden');
+    adminModal.classList.add('flex');
+  });
+
+  document.getElementById('closeAdmin').addEventListener('click', () => {
+    adminModal.classList.add('hidden');
+    adminModal.classList.remove('flex');
+    document.getElementById('adminContent').classList.add('hidden');
+    document.getElementById('adminPassword').value = '';
+  });
+
+  document.getElementById('unlockAdmin').addEventListener('click', () => {
+    const password = document.getElementById('adminPassword').value;
+    if (password === ADMIN_PASSWORD) {
+      document.getElementById('adminContent').classList.remove('hidden');
+      loadPendingVouches();
+    } else {
+      alert('Incorrect password!');
+    }
+  });
+
+  // Load pending vouches
+  async function loadPendingVouches() {
+    try {
+      const result = await window.storage.list('vouch:pending:', true);
+      const container = document.getElementById('pendingVouches');
+      
+      if (!result || !result.keys || result.keys.length === 0) {
+        container.innerHTML = '<p class="text-center text-[#d6bfa7]">No pending vouches</p>';
+        return;
+      }
+
+      container.innerHTML = '';
+      for (const key of result.keys) {
+        try {
+          const data = await window.storage.get(key, true);
+          if (data) {
+            const vouch = JSON.parse(data.value);
+            const avatarUrl = vouch.avatarUrl || `https://cdn.discordapp.com/embed/avatars/${parseInt(vouch.discordId || '0') % 5}.png`;
+            
+            const vouchCard = document.createElement('div');
+            vouchCard.className = 'bg-[#262320] p-4 rounded-lg';
+            vouchCard.innerHTML = `
+              <div class="flex items-start gap-4">
+                <img src="${avatarUrl}" alt="${vouch.username}" 
+                     class="w-12 h-12 rounded-full border-2 border-[#d6bfa7]"
+                     onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'">
+                <div class="flex-1">
+                  <h4 class="font-semibold text-[#f5efe9]">${vouch.username}</h4>
+                  <p class="text-xs text-[#a89684]">Discord ID: ${vouch.discordId || 'Not provided'}</p>
+                  <p class="text-[#d6bfa7] text-sm mt-2">"${vouch.text}"</p>
+                  <p class="text-xs text-[#a89684] mt-2">${new Date(vouch.timestamp).toLocaleString()}</p>
+                </div>
+              </div>
+              <div class="flex gap-2 mt-3">
+                <button onclick="approveVouch('${vouch.id}')" class="px-3 py-1 bg-green-600 rounded hover:bg-green-700 transition">Approve</button>
+                <button onclick="rejectVouch('${vouch.id}')" class="px-3 py-1 bg-red-600 rounded hover:bg-red-700 transition">Reject</button>
+              </div>
+            `;
+            container.appendChild(vouchCard);
+          }
+        } catch (e) {
+          console.log('Error loading vouch:', key);
+        }
+      }
+    } catch (e) {
+      document.getElementById('pendingVouches').innerHTML = '<p class="text-center text-[#d6bfa7]">No pending vouches</p>';
+    }
+  }
+
+  // Load approved vouches in admin
+  async function loadApprovedVouchesAdmin() {
+    try {
+      const result = await window.storage.list('vouch:approved:', true);
+      const container = document.getElementById('approvedVouches');
+      
+      if (!result || !result.keys || result.keys.length === 0) {
+        container.innerHTML = '<p class="text-center text-[#d6bfa7]">No approved vouches</p>';
+        return;
+      }
+
+      container.innerHTML = '';
+      for (const key of result.keys) {
+        try {
+          const data = await window.storage.get(key, true);
+          if (data) {
+            const vouch = JSON.parse(data.value);
+            const avatarUrl = vouch.avatarUrl || `https://cdn.discordapp.com/embed/avatars/${parseInt(vouch.discordId || '0') % 5}.png`;
+            
+            const vouchCard = document.createElement('div');
+            vouchCard.className = 'bg-[#262320] p-4 rounded-lg';
+            vouchCard.innerHTML = `
+              <div class="flex items-start gap-4">
+                <img src="${avatarUrl}" alt="${vouch.username}" 
+                     class="w-12 h-12 rounded-full border-2 border-[#d6bfa7]"
+                     onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'">
+                <div class="flex-1">
+                  <h4 class="font-semibold text-[#f5efe9]">${vouch.username}</h4>
+                  <p class="text-[#d6bfa7] text-sm mt-2">"${vouch.text}"</p>
+                  <p class="text-xs text-[#a89684] mt-2">${new Date(vouch.timestamp).toLocaleString()}</p>
+                </div>
+              </div>
+              <div class="flex gap-2 mt-3">
+                <button onclick="deleteVouch('${vouch.id}')" class="px-3 py-1 bg-red-600 rounded hover:bg-red-700 transition">Delete</button>
+              </div>
+            `;
+            container.appendChild(vouchCard);
+          }
+        } catch (e) {
+          console.log('Error loading vouch:', key);
+        }
+      }
+    } catch (e) {
+      document.getElementById('approvedVouches').innerHTML = '<p class="text-center text-[#d6bfa7]">No approved vouches</p>';
+    }
+  }
+
+  // Approve vouch
+  window.approveVouch = async function(id) {
+    try {
+      const data = await window.storage.get(`vouch:pending:${id}`, true);
+      if (data) {
+        const vouch = JSON.parse(data.value);
+        vouch.status = 'approved';
+        
+        await window.storage.set(`vouch:approved:${id}`, JSON.stringify(vouch), true);
+        await window.storage.delete(`vouch:pending:${id}`, true);
+        
+        loadPendingVouches();
+        loadApprovedVouches();
+      }
+    } catch (e) {
+      alert('Error approving vouch');
+    }
+  };
+
+  // Reject vouch
+  window.rejectVouch = async function(id) {
+    try {
+      await window.storage.delete(`vouch:pending:${id}`, true);
+      loadPendingVouches();
+    } catch (e) {
+      alert('Error rejecting vouch');
+    }
+  };
+
+  // Delete approved vouch
+  window.deleteVouch = async function(id) {
+    if (confirm('Are you sure you want to delete this vouch?')) {
+      try {
+        await window.storage.delete(`vouch:approved:${id}`, true);
+        loadApprovedVouchesAdmin();
+        loadApprovedVouches();
+      } catch (e) {
+        alert('Error deleting vouch');
+      }
+    }
+  };
+
+  // Switch between pending and approved tabs
+  document.getElementById('showPending').addEventListener('click', () => {
+    document.getElementById('pendingVouches').classList.remove('hidden');
+    document.getElementById('approvedVouches').classList.add('hidden');
+    document.getElementById('showPending').className = 'px-4 py-2 bg-[#e0c8af] text-black rounded hover:bg-[#d6bfa7] transition';
+    document.getElementById('showApproved').className = 'px-4 py-2 bg-[#3a332d] rounded hover:bg-[#4a413a] transition';
+    loadPendingVouches();
+  });
+
+  document.getElementById('showApproved').addEventListener('click', () => {
+    document.getElementById('pendingVouches').classList.add('hidden');
+    document.getElementById('approvedVouches').classList.remove('hidden');
+    document.getElementById('showApproved').className = 'px-4 py-2 bg-[#e0c8af] text-black rounded hover:bg-[#d6bfa7] transition';
+    document.getElementById('showPending').className = 'px-4 py-2 bg-[#3a332d] rounded hover:bg-[#4a413a] transition';
+    loadApprovedVouchesAdmin();
+  });
+
+  // Initialize
+  loadApprovedVouches();
+
+  // Auto-rotate carousel every 5 seconds
+  setInterval(() => {
+    if (approvedVouches.length > 1) {
+      currentSlide = (currentSlide + 1) % approvedVouches.length;
+      displayCarousel();
+    }
+  }, 5000);
