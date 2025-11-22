@@ -1,15 +1,35 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>NotDimension</title>
-<link rel="stylesheet" href="style.css">
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.globe.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+  .frosted-glass {
+    background: rgba(28, 25, 23, 0.7);
+    backdrop-filter: blur(10px);
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .animate-fadeIn {
+    animation: fadeIn 0.6s ease-out;
+  }
+  
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+  
+  .pulse-animation {
+    animation: pulse 2s ease-in-out infinite;
+  }
+</style>
 </head>
 <body class="bg-[#0d0c0b] text-[#f0ebe7] min-h-screen relative">
 
@@ -17,12 +37,22 @@
 <div class="fixed inset-0 z-[-10] overflow-hidden">
   <video autoplay muted loop playsinline class="w-full h-full object-cover">
     <source src="background.mp4" type="video/mp4">
-    Your browser does not support the video tag.
   </video>
   <div class="absolute inset-0 bg-black/40"></div>
 </div>
 
-<custom-navbar></custom-navbar>
+<!-- Navbar -->
+<nav class="relative z-20 bg-[#1c1917]/80 backdrop-blur-md shadow-lg">
+  <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+    <h1 class="text-2xl font-bold text-[#e0c8af]">NotDimension</h1>
+    <div class="flex gap-6">
+      <a href="#about" class="text-[#d6bfa7] hover:text-[#f5efe9] transition">About</a>
+      <a href="#roles" class="text-[#d6bfa7] hover:text-[#f5efe9] transition">Roles</a>
+      <a href="#skills" class="text-[#d6bfa7] hover:text-[#f5efe9] transition">Skills</a>
+      <a href="#socials" class="text-[#d6bfa7] hover:text-[#f5efe9] transition">Socials</a>
+    </div>
+  </div>
+</nav>
 
 <main class="relative z-10 max-w-6xl mx-auto px-4 py-12 space-y-12">
 
@@ -43,7 +73,7 @@
   </section>
 
   <!-- About -->
-  <section class="frosted-glass rounded-lg p-6 shadow-xl animate-fadeIn">
+  <section id="about" class="frosted-glass rounded-lg p-6 shadow-xl animate-fadeIn">
     <h2 class="text-3xl font-bold mb-4 text-[#e0c8af]">About Me</h2>
     <p class="text-[#f5efe9] text-lg leading-relaxed">
       Minecraft server developer specializing in plugin configuration, staff management, and community engagement. Experienced in growing servers from small communities to hundreds of members, focusing on creating good gameplay experience.
@@ -51,7 +81,7 @@
   </section>
 
   <!-- Current Roles -->
-  <section class="frosted-glass rounded-lg p-6 shadow-xl animate-fadeIn">
+  <section id="roles" class="frosted-glass rounded-lg p-6 shadow-xl animate-fadeIn">
     <h2 class="text-3xl font-bold mb-4 text-[#e0c8af]">Current Roles</h2>
     <div class="grid md:grid-cols-3 gap-4">
       <div class="bg-[#1c1917]/70 p-4 rounded-lg hover:bg-[#262320]/70 transition">
@@ -126,7 +156,7 @@
   </section>
 
   <!-- Skills & Responsibilities -->
-  <section class="frosted-glass rounded-lg p-6 shadow-xl animate-fadeIn">
+  <section id="skills" class="frosted-glass rounded-lg p-6 shadow-xl animate-fadeIn">
     <h2 class="text-3xl font-bold mb-4 text-[#e0c8af]">Skills & Responsibilities</h2>
     <div class="grid md:grid-cols-2 gap-6">
       <div>
@@ -159,7 +189,6 @@
     <h2 class="text-3xl font-bold mb-6 text-[#e0c8af]">Currently Working On</h2>
     <div class="flex flex-col md:flex-row gap-6">
       
-      <!-- Card 1 -->
       <div class="flex-1 bg-[#1c1917]/70 rounded-xl p-5 shadow-lg hover:bg-[#262320]/70 transition flex flex-col justify-between">
         <div>
           <h3 class="text-xl font-semibold mb-2 text-[#f5efe9]">MOOC Java Programming I & II</h3>
@@ -171,7 +200,6 @@
         </a>
       </div>
       
-      <!-- Card 2 -->
       <div class="flex-1 bg-[#1c1917]/70 rounded-xl p-5 shadow-lg hover:bg-[#262320]/70 transition flex flex-col justify-between">
         <div>
           <h3 class="text-xl font-semibold mb-2 text-[#f5efe9]">Object-Oriented Java Course</h3>
@@ -187,7 +215,7 @@
   </section>
 
   <!-- Socials -->
-  <section class="frosted-glass rounded-lg p-6 shadow-xl animate-fadeIn">
+  <section id="socials" class="frosted-glass rounded-lg p-6 shadow-xl animate-fadeIn">
     <h2 class="text-3xl font-bold mb-6 text-[#e0c8af]">Socials</h2>
     <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
       <a href="https://discord.com/users/753556348784083024" target="_blank" class="bg-[#1c1917]/70 hover:bg-[#262320]/70 p-4 rounded-lg flex items-center transition">
@@ -213,25 +241,15 @@
 
 </main>
 
-<custom-footer></custom-footer>
+<!-- Footer -->
+<footer class="relative z-20 bg-[#1c1917]/80 backdrop-blur-md mt-12 py-6">
+  <div class="max-w-6xl mx-auto px-4 text-center text-[#d6bfa7]">
+    <p>&copy; 2024 NotDimension. All rights reserved.</p>
+  </div>
+</footer>
 
-<script src="components/navbar.js"></script>
-<script src="components/footer.js"></script>
-<script src="script.js"></script>
 <script>
   feather.replace();
-
-  if(document.getElementById('vanta-bg')){
-    VANTA.GLOBE({
-      el: "#vanta-bg",
-      mouseControls: true,
-      touchControls: true,
-      minHeight: 200.00,
-      minWidth: 200.00,
-      scale: 1.00,
-      scaleMobile: 1.00
-    });
-  }
 </script>
 </body>
 </html>
